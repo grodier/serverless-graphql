@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server-micro');
+const cors = require('micro-cors')();
 
 const typeDefs = gql`
   type Query {
@@ -23,4 +24,4 @@ const server = new ApolloServer({
   playground: true
 });
 
-module.exports = server.createHandler();
+module.exports = cors(server.createHandler());
