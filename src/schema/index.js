@@ -1,31 +1,16 @@
 const { gql } = require("apollo-server-micro");
 
-const schema = gql`
-  type Query {
-    users: [User!]
-    user(id: ID!): User
-    me: User
+const userSchema = require("./user");
+const messageSchema = require("./message");
 
-    messages: [Message!]!
-    message(id: ID!): Message!
+const linkSchema = gql`
+  type Query {
+    _: Boolean
   }
 
   type Mutation {
-    createMessage(text: String!): Message!
-    deleteMessage(id: ID!): Boolean!
-  }
-
-  type User {
-    id: ID!
-    username: String!
-    messages: [Message!]
-  }
-
-  type Message {
-    id: ID!
-    text: String!
-    user: User!
+    _: Boolean
   }
 `;
 
-module.exports = schema;
+module.exports = [linkSchema, userSchema, messageSchema];
