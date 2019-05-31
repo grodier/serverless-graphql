@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server-micro');
+const uuidv4 = require('uuid/v4');
 const cors = require('micro-cors')();
 
 const schema = gql`
@@ -9,6 +10,10 @@ const schema = gql`
 
     messages: [Message!]!
     message(id: ID!): Message!
+  }
+
+  type Mutation {
+    createMessage(text: String!): Message!
   }
 
   type User {
@@ -57,6 +62,17 @@ const resolvers = {
     users: () => Object.values(users),
     message: (parent, { id }) => messages[id],
     messages: () => Object.values(messages)
+  },
+  Mutation: {
+    createMessage: (parent, { text }, { me }) => {
+      const id = uuidv4();
+      const message = { id, text, userId: me.id };
+
+      messages[id] = message;
+      users[me.id].messageIds.push(id);
+
+      return message;
+    }
   },
   User: {
     messages: user =>
