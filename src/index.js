@@ -1,9 +1,10 @@
-const { ApolloServer } = require('apollo-server-micro');
-const cors = require('micro-cors')();
+const { ApolloServer } = require("apollo-server-micro");
+const microAsyncFirst = require("./utils/microFirst");
+const cors = require("micro-cors")();
 
-const schema = require('./schema');
-const resolvers = require('./resolvers');
-const { connectDb, ...models } = require('./models');
+const schema = require("./schema");
+const resolvers = require("./resolvers");
+const { connectDb, ...models } = require("./models");
 
 const server = new ApolloServer({
   typeDefs: schema,
@@ -15,8 +16,6 @@ const server = new ApolloServer({
   playground: true
 });
 
-async function start() {
-  await connectDb();
-  return cors(server.createHandler());
-}
-module.exports = start();
+const dbHandler = microAsyncFirst(connectDb);
+
+module.exports = cors(dbHandler(server.createHandler()));
