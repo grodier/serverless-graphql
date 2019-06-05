@@ -1,5 +1,5 @@
-import Message from './message';
-import User from './user';
+const Message = require('./message');
+const User = require('./user');
 
 let users = {
   1: {
