@@ -1,16 +1,30 @@
-const uuidv4 = require("uuid/v4");
+const uuidv4 = require('uuid/v4');
 
 const Query = {
-  users: (parent, args, { models }) => Object.values(models.users),
-  user: (parent, { id }, { models }) => models.users[id],
-  me: (parent, args, { me }) => me
+  users: async (parent, args, { models }) => {
+    return await models.User.find({})
+      .lean()
+      .exec();
+  },
+  user: async (parent, { id }, { models }) => {
+    return models.User.findById(id)
+      .lean()
+      .exec();
+  },
+  me: async (parent, args, { models, me }) => {
+    return models.User.findById(me.id)
+      .lean()
+      .exec();
+  }
 };
 
 const User = {
-  messages: (user, args, { models }) => {
-    return Object.values(models.messages).filter(
-      message => message.userId === user.id
-    );
+  messages: async (user, args, { models }) => {
+    const messages = await models.Message.find({
+      user: user.id
+    });
+    console.log(messages);
+    return messages;
   }
 };
 

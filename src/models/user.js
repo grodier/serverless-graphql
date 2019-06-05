@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.post('remove', async function(doc, next) {
   console.log('REMOVVINNGG');
-  await Message.remove({ user: doc._id }).exec();
+  await Message.deleteMany({ user: doc._id }).exec();
   next();
 });
 

@@ -5,6 +5,6 @@ const MessageSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true }
 });
 
-const MessageModel = mongoose.model('Message', MessageSchema);
+const MessageModel = mongoose.model('message', MessageSchema);
 
 module.exports = MessageModel;
