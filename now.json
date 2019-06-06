@@ -4,6 +4,7 @@
   "builds": [{ "src": "src/index.js", "use": "@now/node" }],
   "routes": [{ "src": "/.*", "dest": "src/index.js" }],
   "env": {
-    "DATABASE_URL": "@graphql-serverless-dbconnection"
+    "DATABASE_URL": "@graphql-serverless-dbconnection",
+    "JWT_SECRET": "@graphql-serverless-jwt-secret"
   }
 }
